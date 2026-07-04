@@ -1,12 +1,18 @@
 const net = require('net');
 
 const host = process.argv[2];
-const portInput = process.argv[3]; 
+let portInput = process.argv[3]; // Changed from const to let so we can modify it
 
-if (!host || !portInput) {
-    console.log("Error: Missing target or port range.");
-    console.log("Usage: node scanner.js <target> <startPort-endPort> OR <port1,port2,port3>");
+if (!host) {
+    console.log("Error: Missing target.");
+    console.log("Usage: node scanner.js <target> [startPort-endPort]");
     process.exit(1); 
+}
+
+// THE FIX: If the user didn't provide ports, default to 1-1000
+if (!portInput) {
+    console.log("[*] No ports specified. Defaulting to standard 1-1000 sweep...");
+    portInput = "1-1000"; 
 }
 
 // 1. Dynamic Input Parsing
